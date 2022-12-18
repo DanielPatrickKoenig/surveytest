@@ -28,7 +28,7 @@ def load_data():
     user_id = auth.user.id
     if exists(get_file_path(request)):
         f = open(get_file_path(request), "r")
-        return response.json(dict(content=f.read()))
+        return response.json(dict(content=f.read(), status='success'))
     else:
         return response.json(dict(content=default_user_content(), status='success'))
 

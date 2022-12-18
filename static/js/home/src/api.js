@@ -1,9 +1,11 @@
 import axios from 'axios';
+const sectionSplitter = '|||';
+const itemSplitter = ',';
 function getAPIBase(){
     return `/${document.querySelector('#app-name-indicator').getAttribute('app-name')}/`;
 }
 function getLocalStorageProgressKey(){
-    return 'dnd-character-indicator-progress-key-6';
+    return 'dnd-character-indicator-progress-key-7';
 }
 async function load(){
     const response = await axios.get(`${getAPIBase()}home/load_data`);
@@ -30,8 +32,6 @@ function questionsLoaded(){
     return document.querySelector('#app-name-indicator').getAttribute('loaded') === 'true';
 }
 async function updateProgress(progressData, questionIndexes, currentIndex){
-    const sectionSplitter = '|||';
-    const itemSplitter = ',';
     let loadedData = await load();
     
     if(!loadedData.content){
@@ -44,4 +44,26 @@ async function updateProgress(progressData, questionIndexes, currentIndex){
     dataList.push(progressData);
     await save([ dataList.join(itemSplitter), indexes, progress ].join(sectionSplitter));
 }
-export { getAPIBase, load, save, getQuestions, questionsLoaded, updateProgress };
+async function parseContent(){
+    let progress = [];
+    let order = [];
+    let currentIndex = 0;
+    const loadedData = await load();
+    console.log(loadedData);
+    const hasLoadedData = loadedData.content && loadedData.content.includes(sectionSplitter);
+    if(hasLoadedData){
+        progress = loadedData.content.split(sectionSplitter)[0].split(itemSplitter).map(item => { 
+            const [value, code, index] = item.split('/');
+            return {
+                value,
+                code,
+                index
+            }
+        });
+        order = loadedData.content.split(sectionSplitter)[1].split(itemSplitter);
+        currentIndex = loadedData.content.split(sectionSplitter)[2];
+    }
+    return { progress, order, currentIndex };
+
+}
+export { getAPIBase, load, save, getQuestions, questionsLoaded, updateProgress, parseContent };
