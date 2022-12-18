@@ -1,36 +1,26 @@
 import './App.css';
-import { getAPIBase, load } from './api';
+import { getQuestions, questionsLoaded } from './api';
 import { useState } from 'react';
-import ExampleComponent from './components/ExampleComponent';
+import { shuffle } from 'lodash';
+import Survey from './components/Survey';
 function App() {
-  const [content, setContent] = useState(null);
+  const [questions, setQuestions] = useState(null);
   const loadData = async () => {
-    const data = await load();
-    setContent(data.content);
+    const qDada = await getQuestions();
+    const randomizedQuestions = shuffle(qDada.questions.map((item, index) => ({ ...item, index })));
+    setQuestions(randomizedQuestions);
   }
-  loadData();
+  if(!questionsLoaded()){
+    loadData();
+  }
+  
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={`${getAPIBase()}static/images/logo.svg`} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        {
-          content 
-            ? <ExampleComponent content={content} /> 
-            : <div>Loading...</div>
-        }
-        
-      </header>
+      {
+        questions 
+          ? <Survey questions={questions} /> 
+          : <div>Loading...</div>
+      }
     </div>
   );
 }
