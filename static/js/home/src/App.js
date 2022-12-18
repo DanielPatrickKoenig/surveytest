@@ -1,5 +1,5 @@
 import './App.css';
-import { getQuestions, questionsLoaded } from './api';
+import { getQuestions, questionsLoaded, load } from './api';
 import { useState } from 'react';
 import { shuffle } from 'lodash';
 import Survey from './components/Survey';

@@ -6,10 +6,10 @@ const Survey = ({ questions }) => {
     // const [fluidContent, setFluidContent] = useState(content);
     // const [saving, setSaving] = useState(false);
     const [currentQuestion, setCurrentQuestion] = useState(0);
-    const [saving, setSaving] = useState(false); 
+    const [saving, setSaving] = useState(false);
     const onQuestionAnswered = async (value, code, index) => {
         setSaving(true);
-        await updateProgress(`${value}/${code}/${index}`);
+        await updateProgress(`${value}/${code}/${index}`, questions.map(item => item.index), currentQuestion);
         setCurrentQuestion(currentQuestion + 1);
         setSaving(false);
     }

@@ -3,7 +3,6 @@ from os.path import exists
 def get_base_path(req):
     return 'applications/'+req.application
 
-@auth.requires_login()
 def index():
     dir = get_base_path(request) + '/static/js/home/build/static'
     jsItems = os.listdir(dir+'/js')
@@ -31,7 +30,7 @@ def load_data():
         f = open(get_file_path(request), "r")
         return response.json(dict(content=f.read()))
     else:
-        return response.json(dict(content=default_user_content()))
+        return response.json(dict(content=default_user_content(), status='success'))
 
 @auth.requires_login()
 def save_data():
@@ -39,6 +38,7 @@ def save_data():
     f = open(get_file_path(request), "w")
     f.write(data_to_save)
     f.close()
+    return response.json(dict(status='success'))
 
 def get_questions():
     types = {
