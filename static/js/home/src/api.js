@@ -1,11 +1,12 @@
 import axios from 'axios';
-const apiBase = '/reactpytemplate/';
+function getAPIBase(){
+    return `/${document.querySelector('#app-name-indicator').getAttribute('app-name')}/`;
+}
 async function load(){
-    const response = await axios.get(`${apiBase}home/load_data`);
+    const response = await axios.get(`${getAPIBase()}home/load_data`);
     return response.data;
 }
 async function save(content){
-    const response = await axios.post(`${apiBase}home/save_data`, {content});
-    return response.data;
+    await axios.post(`${getAPIBase()}home/save_data`, {content});
 }
-export { apiBase, load, save };
+export { getAPIBase, load, save };

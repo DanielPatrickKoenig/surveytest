@@ -1,5 +1,5 @@
 import './App.css';
-import { apiBase, load } from './api';
+import { getAPIBase, load } from './api';
 import { useState } from 'react';
 import ExampleComponent from './components/ExampleComponent';
 function App() {
@@ -12,7 +12,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={`${apiBase}static/images/logo.svg`} className="App-logo" alt="logo" />
+        <img src={`${getAPIBase()}static/images/logo.svg`} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
