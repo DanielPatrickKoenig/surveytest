@@ -41,7 +41,8 @@ async function updateProgress(progressData, questionIndexes, currentIndex){
     const dataList = sections.length ? sections[0].split(itemSplitter) : [];
     const indexes = questionIndexes.join(itemSplitter);
     const progress = currentIndex;
-    dataList.push(progressData);
+    dataList[currentIndex] = progressData;
+    // dataList.push(progressData);
     await save([ dataList.join(itemSplitter), indexes, progress ].join(sectionSplitter));
 }
 async function parseContent(){

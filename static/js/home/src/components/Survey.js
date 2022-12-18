@@ -2,10 +2,10 @@
 import { useState } from 'react';
 import { updateProgress} from '../api';
 import Question from './Question';
-const Survey = ({ questions, questionIndex }) => {
+const Survey = ({ questions, index }) => {
     // const [fluidContent, setFluidContent] = useState(content);
     // const [saving, setSaving] = useState(false);
-    const [currentQuestion, setCurrentQuestion] = useState(0);
+    const [currentQuestion, setCurrentQuestion] = useState(Number(index));
     const [saving, setSaving] = useState(false);
     const onQuestionAnswered = async (value, code, index) => {
         setSaving(true);

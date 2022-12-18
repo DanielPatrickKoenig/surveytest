@@ -15,7 +15,7 @@ function App() {
       ? loadedData.order.map(item => ({...qDada.questions[item], index: item}))
       : shuffle(qDada.questions.map((item, index) => ({ ...item, index })));
     const currentQuestion = loadedData.order.length
-      ? loadedData.currentQuestion
+      ? loadedData.progress.length
       : 0;
     setQuestions(randomizedQuestions);
     setQuestionIndex(currentQuestion);
