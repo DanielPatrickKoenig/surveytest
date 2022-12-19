@@ -39,9 +39,8 @@ def save_data():
     f.write(data_to_save)
     f.close()
     return response.json(dict(status='success'))
-
-def get_questions():
-    types = {
+def get_types():
+    return {
         'paladin': 1,
         'druid': 2,
         'wizard': 3,
@@ -55,6 +54,8 @@ def get_questions():
         'sorcerer': 11,
         'warlock': 12
     }
+def get_questions():
+    types = get_types()
     questions = [
         {
             "text": "The most important part of a battle is looting the bodies of your enemies.",
@@ -298,5 +299,23 @@ def get_questions():
         }
     ]
     return response.json(dict(types=types, questions=questions))
+def process_results():
+    data_to_process = request.vars['content']
+    section_splitter = request.vars['section_splitter']
+    item_splitter = request.vars['item_splitter']
+    value_splitter = request.vars['value_splitter']
+    sections = data_to_process.split(section_splitter)
+    scores = sections[0].split(item_splitter)
+    score_matrix = [{'value': s.split(value_splitter)[0], 'code': s.split(value_splitter)[1]} for s in scores]
+    types = get_types()
+    type_names = list(types.keys())
+    # print([types[t] for t in type_names])
+    # print([s['value'] for s in score_matrix])
+    processed_scores = {n: 0 for n in type_names}
+    for s in score_matrix:
+        for t in type_names:
+            if int(s['code']) == types[t]:
+                processed_scores[t] = int(processed_scores[t]) + int(s['value'])
+    print(processed_scores)
     
     

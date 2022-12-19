@@ -1,11 +1,11 @@
 import axios from 'axios';
-const sectionSplitter = '|||';
+const sectionSplitter = '...';
 const itemSplitter = ',';
 function getAPIBase(){
     return `/${document.querySelector('#app-name-indicator').getAttribute('app-name')}/`;
 }
 function getLocalStorageProgressKey(){
-    return 'dnd-character-indicator-progress-key-9';
+    return 'dnd-character-indicator-progress-key-10';
 }
 async function load(){
     const response = await axios.get(`${getAPIBase()}home/load_data`);
@@ -54,7 +54,7 @@ async function parseContent(){
     const hasLoadedData = loadedData.content && loadedData.content.includes(sectionSplitter);
     if(hasLoadedData){
         progress = loadedData.content.split(sectionSplitter)[0].split(itemSplitter).map(item => { 
-            const [value, code, index] = item.split('/');
+            const [value, code, index] = item.split('-');
             return {
                 value,
                 code,
@@ -78,4 +78,7 @@ async function transferLocalDataToFile(){
     }
     
 }
-export { getAPIBase, load, save, getQuestions, questionsLoaded, updateProgress, parseContent, transferLocalDataToFile };
+async function getResults(content){
+    const response = await axios.get(`${getAPIBase()}home/process_results`, {params:{content, section_splitter: sectionSplitter, item_splitter: itemSplitter, value_splitter: '-'}});
+}
+export { getAPIBase, load, save, getQuestions, questionsLoaded, updateProgress, parseContent, transferLocalDataToFile, getResults };
