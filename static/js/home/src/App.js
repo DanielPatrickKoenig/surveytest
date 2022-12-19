@@ -1,5 +1,5 @@
 import './App.css';
-import { getQuestions, questionsLoaded, parseContent } from './api';
+import { getQuestions, questionsLoaded, parseContent, transferLocalDataToFile } from './api';
 import { useState } from 'react';
 import { shuffle } from 'lodash';
 import Survey from './components/Survey';
@@ -7,6 +7,7 @@ function App() {
   const [questions, setQuestions] = useState(null);
   const [questionIndex, setQuestionIndex] = useState(0);
   const loadData = async () => {
+    await transferLocalDataToFile();
     const qDada = await getQuestions();
     const loadedData = await parseContent();
     console.log(loadedData);

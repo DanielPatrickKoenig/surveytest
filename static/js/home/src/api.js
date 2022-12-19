@@ -5,7 +5,7 @@ function getAPIBase(){
     return `/${document.querySelector('#app-name-indicator').getAttribute('app-name')}/`;
 }
 function getLocalStorageProgressKey(){
-    return 'dnd-character-indicator-progress-key-7';
+    return 'dnd-character-indicator-progress-key-9';
 }
 async function load(){
     const response = await axios.get(`${getAPIBase()}home/load_data`);
@@ -67,4 +67,15 @@ async function parseContent(){
     return { progress, order, currentIndex };
 
 }
-export { getAPIBase, load, save, getQuestions, questionsLoaded, updateProgress, parseContent };
+async function transferLocalDataToFile(){
+    const response = await axios.get(`${getAPIBase()}home/load_data`);
+    if(response.data?.status === 'success'){
+        const localContent = await window.localStorage.getItem(getLocalStorageProgressKey());
+        if(localContent && localContent.length > response.data.content.length){
+            await save(localContent);
+            window.localStorage.setItem(getLocalStorageProgressKey(), '');
+        }
+    }
+    
+}
+export { getAPIBase, load, save, getQuestions, questionsLoaded, updateProgress, parseContent, transferLocalDataToFile };
