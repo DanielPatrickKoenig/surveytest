@@ -316,6 +316,9 @@ def process_results():
         for t in type_names:
             if int(s['code']) == types[t]:
                 processed_scores[t] = int(processed_scores[t]) + int(s['value'])
-    print(processed_scores)
+    sorted_values = [processed_scores[n] for n in type_names]
+    sorted_values.sort()
+    lowest_value = sorted_values[0]
+    return response.json([n for n in type_names if processed_scores[n] == lowest_value])
     
     

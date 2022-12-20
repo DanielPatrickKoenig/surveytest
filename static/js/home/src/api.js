@@ -80,5 +80,6 @@ async function transferLocalDataToFile(){
 }
 async function getResults(content){
     const response = await axios.get(`${getAPIBase()}home/process_results`, {params:{content, section_splitter: sectionSplitter, item_splitter: itemSplitter, value_splitter: '-'}});
+    return response.data;
 }
 export { getAPIBase, load, save, getQuestions, questionsLoaded, updateProgress, parseContent, transferLocalDataToFile, getResults };
